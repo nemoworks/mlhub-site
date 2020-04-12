@@ -1,107 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>ML Hub</title>
-    <link>/</link>
-    <description>Recent content on ML Hub</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 08 Apr 2020 15:56:45 +0800</lastBuildDate>
-    
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>平台概况</title>
-      <link>/docs/intro/</link>
-      <pubDate>Wed, 08 Apr 2020 15:34:56 +0800</pubDate>
-      
-      <guid>/docs/intro/</guid>
-      <description>背景 随着机器学习技术的
-系统架构 ML Hub是一个架构于业界最先进的Kubernetes容器云之上的机器学习平台。
-技术特色 </description>
-    </item>
-    
-    <item>
-      <title>在线开发环境</title>
-      <link>/docs/webdev/</link>
-      <pubDate>Wed, 08 Apr 2020 15:56:30 +0800</pubDate>
-      
-      <guid>/docs/webdev/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>分布式资源调度</title>
-      <link>/docs/schedule/</link>
-      <pubDate>Wed, 08 Apr 2020 15:56:17 +0800</pubDate>
-      
-      <guid>/docs/schedule/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>NNI</title>
-      <link>/blog/nni/</link>
-      <pubDate>Wed, 08 Apr 2020 15:49:18 +0800</pubDate>
-      
-      <guid>/blog/nni/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>自动化超参数训练</title>
-      <link>/docs/hyperparameter/</link>
-      <pubDate>Wed, 08 Apr 2020 15:56:45 +0800</pubDate>
-      
-      <guid>/docs/hyperparameter/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>模型版本控制</title>
-      <link>/docs/versioncontrol/</link>
-      <pubDate>Wed, 08 Apr 2020 15:56:10 +0800</pubDate>
-      
-      <guid>/docs/versioncontrol/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>无服务化模型发布</title>
-      <link>/docs/servless/</link>
-      <pubDate>Wed, 08 Apr 2020 15:56:22 +0800</pubDate>
-      
-      <guid>/docs/servless/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Company</title>
-      <link>/company/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/company/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Password Recovery</title>
-      <link>/password-recovery/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/password-recovery/</guid>
-      <description>&amp;lt;div class=&amp;quot;form-item&amp;quot;&amp;gt;&amp;lt;label&amp;gt;Your email &amp;lt;span class=&amp;quot;error&amp;quot; id=&amp;quot;user-email-validation-error&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/label&amp;gt;&amp;lt;input type=&amp;quot;email&amp;quot; name=&amp;quot;user-email&amp;quot; autofocus=&amp;quot;true&amp;quot; autocomplete=&amp;quot;off&amp;quot; style=&amp;quot;background-image: url(&amp;amp;quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&amp;amp;quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;p&amp;gt;&amp;lt;button class=&amp;quot;button primary width-100&amp;quot;&amp;gt;Send&amp;lt;/button&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;/account/&amp;quot; class=&amp;quot;small muted&amp;quot;&amp;gt;Back to Log In&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt; </description>
-    </item>
-    
-    <item>
-      <title>Sign In</title>
-      <link>/account/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/account/</guid>
-      <description>&amp;lt;div class=&amp;quot;form-item&amp;quot;&amp;gt;&amp;lt;label&amp;gt;Email &amp;lt;span id=&amp;quot;user-email-validation-error&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/label&amp;gt;&amp;lt;input type=&amp;quot;email&amp;quot; name=&amp;quot;user-email&amp;quot; autofocus=&amp;quot;true&amp;quot; autocomplete=&amp;quot;off&amp;quot; style=&amp;quot;background-image: url(&amp;amp;quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&amp;amp;quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;form-item&amp;quot;&amp;gt;&amp;lt;label&amp;gt;Password &amp;lt;span id=&amp;quot;user-password-validation-error&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/label&amp;gt;&amp;lt;input type=&amp;quot;password&amp;quot; name=&amp;quot;user-password&amp;quot; autocomplete=&amp;quot;off&amp;quot; style=&amp;quot;background-image: url(&amp;amp;quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&amp;amp;quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;p&amp;gt;&amp;lt;button class=&amp;quot;button primary width-100&amp;quot;&amp;gt;Log in&amp;lt;/button&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a href=&amp;quot;/password-recovery/&amp;quot; class=&amp;quot;small muted&amp;quot;&amp;gt;Forgot password?&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p class=&amp;quot;small&amp;quot;&amp;gt;If you have any questions about authorization or you&#39;re our customer but haven&#39;t receive your login credentials, just send us a short email at &amp;lt;b&amp;gt;support@company.</description>
-    </item>
-    
-  </channel>
-</rss>
