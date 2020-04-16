@@ -128,20 +128,20 @@ headingSelector: 'h3'
 <p>因此我们设计和开发了分布式机器学习支撑平台ML Hub。核心的设计思想是用户可以为每个机器学习项目创建工作区，在其中借助平台提供的一系列工具开展训练工作流程，从而解决机器学习训练的繁琐过程。</p>
 <h3 id="系统架构">系统架构</h3>
 <p>ML Hub是一个架构于业界最先进的Kubernetes容器云之上的机器学习平台。基于Kubernetes+Docker+GPU 架构,定位于机器学习的上层应用，免去客户部署环境的麻烦，快速开始深度学习任务。软件基于容器基础，内置多种深度学习框架，提供多种交互式开发及 API 接口，可满足多用户、多场景的需求</p>
-<p><img src="../../static/img/mlhub/Architecture.jpg" alt=""></p>
+<p><img src="../../img/mlhub/Architecture.jpg" alt=""></p>
 <h3 id="技术特色">技术特色</h3>
 <h4 id="图形工作界面">图形工作界面</h4>
 <p>表盘式工作界面，从监控页可以看到，ML Hub集群里所有的GPU资源，已分配的GPU资源，所有的计算节点信息、任务信息等。菜单界面平滑直观，所有功能一目了然。</p>
-<p><img src="../../static/img/mlhub/UI.png" alt=""></p>
+<p><img src="../../img/mlhub/UI.png" alt=""></p>
 <h4 id="数据存储">数据存储</h4>
 <p>基于 ceph 和 nfs 的分布式存储架构，存储容量大、容易横向扩展，由用户创建指定配额的存储用于存放训练数据集、测试数据集、训练结果等。</p>
-<p><img src="../../static/img/mlhub/storage.jpg" alt=""></p>
+<p><img src="../../img/mlhub/storage.jpg" alt=""></p>
 <h4 id="模型训练">模型训练</h4>
 <p>基于 Kubernetes 的容器调度引擎，支持离线训练，成熟稳定；支持 TensorFlow 以及 Pytorch 框架的多机多卡分布式训练，可通过 key-value 对的形式设置超参数；任务训练时，支持可视化及显示 loss 和 accuracy 变化曲线，可实时查看任务训练过程中的 log 输出；可动态调度任务到最优的节点上，保证资源使用的效率；同时支持 Jupyter，Terminal 等多种交互式开发方式和调试。
 模型训练、超参数调节、训练结果可视化、日志查看等一系列环节和工具，使用户可以聚焦在核心的算法设计上面，极大提高了工作效率。通过资源配额、任务调度和容错，使模型训练任务高效可靠；分布式任务使大规模网络模型的训练性能大大提高。
-<img src="../../static/img/mlhub/webdev-flow.png" alt="">
-<img src="../../static/img/mlhub/train.jpg" alt="">
-<img src="../../static/img/mlhub/train-parameter.jpg" alt=""></p>
+<img src="../../img/mlhub/webdev-flow.png" alt="">
+<img src="../../img/mlhub/train.jpg" alt="">
+<img src="../../img/mlhub/train-parameter.jpg" alt=""></p>
 
 
     
