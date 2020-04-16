@@ -16,7 +16,9 @@ toc = true
 
 ### 模块设计
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/struct.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 1: 模块设计</div> </center>
+|![](../../img/mlhub/hyperparameter-figures/struct.png)|
+|:--:| 
+|*图 1: 模块设计*|
 
 图1通过一个完整的调参任务流程展示了自动化超参数训练的模块设计，图中的标号代表了数据的传递过程： 
 
@@ -96,13 +98,17 @@ def main():
 
 在MLhub上，我们通过用户填写git仓库的方式来为新创建的工作区添加代码：
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/workspace.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 2: 创建工作区-基础信息</div> </center>
+|![](../../img/mlhub/hyperparameter-figures/workspace.png)|
+|:--:| 
+|*图 2: 创建工作区-基础信息*|
 
 #### 任务定制
 
 工作区创建完毕后，我们可以看到新建的工作区:
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/workspace2.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 3: 工作区列表 </div> </center>
+|![](../../img/mlhub/hyperparameter-figures/workspace2.png)|
+|:--:| 
+|*图 3: 工作区列表*|
 
 接着我们可以通过以下两种方式启动一个超参数任务
 
@@ -110,17 +116,25 @@ def main():
 
 点击工作区，进入详情页面后，在任务定制面板中，点击增加任务，然后填写具体的任务信息
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/create-experiment.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 4: 任务定制 </div> </center>
+|![](../../img/mlhub/hyperparameter-figures/create-experiment.png)|
+|:--:| 
+|*图 4: 任务定制*|
 
 ##### 方式二： 在线编辑(推荐)
 
 点击工作区上的vscode按钮，可以进入code server进行在线编辑，可以看到，我们的代码和选择的数据卷已经在code server中：
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/create-experiment2.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 5: 在线编辑 </div> </center>
+
+|![](../../img/mlhub/hyperparameter-figures/create-experiment2.png)|
+|:--:| 
+|*图 5: 在线编辑*|
 
 接着，在终端中执行<code>dlctl nni-init</code>,会生成一个 dlkit-tune.json文件，编辑该文件，填入超参数空间以及训练指令等信息:
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/create-experiment3.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 6: 准备任务 </div> </center>
+
+|![](../../img/mlhub/hyperparameter-figures/create-experiment3.png)|
+|:--:| 
+|*图 6: 准备任务*|
 
 最后在终端中执行<code>dlctl nni-submit</code>就可以启动调参任务
 
@@ -128,8 +142,17 @@ def main():
 
 任务运行时，我们可以在任务详情中查看任务的运行进度、每个子任务的中间结果，Loss变化等信息：
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/profile.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 7: 任务信息 </div> </center>
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/detail.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 8: 结果可视化 </div> </center>
+|![](../../img/mlhub/hyperparameter-figures/profile.png)|
+|:--:| 
+|*图 7: 任务信息*|
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./hyperparameter-figures/trials.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图 9: 子任务信息 </div> </center>
+
+|![](../../img/mlhub/hyperparameter-figures/detail.png)|
+|:--:| 
+|*图 8: 结果可视化*|
+
+
+|![](../../img/mlhub/hyperparameter-figures/trials.png)|
+|:--:| 
+|*图 9: 子任务信息*|
