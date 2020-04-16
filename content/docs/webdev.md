@@ -14,6 +14,6 @@ toc = true
 
 在线开发环境还集成了任务管理工具，可以通过命令行发布训练任务或完成模型部署。发布训练任务后还可以实时查看训练日志。
 
-![](../../static/img/mlhub/code-server.jpg)
+![](../../img/mlhub/code-server.jpg)
 
 ### 如何使用
