@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta name="generator" content="Hugo 0.69.0" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> 模型版本控制 </title>
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  <meta name="author" content="@mlhub">
+
+
+  <meta property="og:title" content="模型版本控制" />
+<meta property="og:description" content="背景 版本控制在传统软件开发的管理过程中发挥着重要作用。大量开发者通过Git，SVN等版本控制工具，或是GitHub等平台进行开发过程的生命周期管理。而在机器学习和深度学习开发的过程中，通常需要开发人员自行进行版本控制，大大增加了开发人员的负担和项目管理的难度。
+版本控制的目标 内容追踪 版本控制需要追踪软件开发过程中文件的内容变化，并能够对不同版本的文件内容差异进行表示。
+版本切换 版本控制需要记录用户提交的所有版本，并能够在不同版本之间进行切换。
+协同开发 版本控制需要支撑开发团队进行协同开发，包括版本的分支，合并等功能。
+传统版本控制的局限 由于模型开发过程与传统软件开发过程有所不同，传统的版本控制工具在模型开发过程中难以发挥出理想的效果。
+    传统软件开发 模型开发     核心产品 代码 模型   核心文件 文本文件 二进制文件   文件规模 Byte/KB MB/GB   迭代方式 文本编辑 迭代训练    传统版本控制的核心思想是追踪文件内容的变化，在此基础上构建版本切换和协同开发机制。由于上述不同，传统版本控制工具和平台在对模型进行管理时难以实现内容变化的有效追踪，高效的版本切换和协同开发机制。
+内容追踪 传统版本控制对文件的文本内容变化进行追踪。如Git中可以通过git diff命令计算两个版本之间的文件内容差异。
+由于模型文件并非通过文本编辑而是通过重新训练生成，且模型文件通常为二进制文件，传统的版本控制工具难以对模型文件的内容变化进行刻画和有意义的表示。
+版本切换 传统版本控制工具通过对文件内容和版本差异的记录计算出目标版本的文件内容，并写入对应文件。如Git中可以通过git checkout命令切换到指定版本。
+由于模型文件版本差异较大，通过传统版本控制工具进行版本记录的额外存储开销过大且通过版本切换命令计算目标版本的过程计算量较大，在版本切换的效率和存储开销方面远不如开发人员手动维护的版本记录。
+协同开发 传统版本控制工具通过分支，合并，拉取更新等方式进行协同开发。例如Git中可以通过git branch，git merge，git pull等命令进行协同开发。
+由于模型文件规模较大且通常为二进制文件，不同版本的合并难以进行，且远程仓库版本的拉取速度较慢。
+MLHUB版本控制的特色 MLHUB从模型开发过程的特征出发，以模型为核心实现简单易用的版本控制机制。
+内容追踪 MLHUB追踪模型的版本变化，对不同版本的模型进行清晰刻画并进行有意义的版本差异表示。
+版本切换 MLHUB从模型的特征出发，实现适合模型文件的版本存储和切换机制，实现节约存储空间和高效切换版本的目标。
+协同开发 MLHUB基于模型的结构实现模型的解构和复用，构建适用于模型文件的分支与合并机制并降低与远程仓库的通信压力。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/versioncontrol/" />
+<meta property="article:published_time" content="2020-04-08T15:56:10+08:00" />
+<meta property="article:modified_time" content="2020-04-08T15:56:10+08:00" />
+
+  
+
+
+
+
+  
+  
+  
+  
+  
+
+  <link rel="canonical" href="/docs/versioncontrol/">  
+
+  <link rel="shortcut icon" type="image/png"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABvklEQVQ4T82Tz0vTcRjHX8/XbYqGzEtiltShgghziR4UYsuQEASJWOvQ0dsEsaA/oIPYbZ49eZrfToEHO20jEAoRCVMMw1Hrx3IR1ZpzP3xiX9j4sh969Tk+P1583u/n+QgNwhvWaYQZBEEJ/RDmt/ySq26X6oQvrPe0NAjDTQarLgfugxzXFNYNJRQJyKJ9pgLwmdqP8ljhYXMTrz3d/O1qZ6zUnPrHp7UEqYM8N4EVhFDULyulmgXwmjorykyLk7fXOzk872aknrJkmp2NBD8zBYYUFh3CnHhNjTiEnr4u0hc66G3kiT3/+Tebm99IZ/PkLUC7E/fCXRyx73z8muEO0NYIFP/FxvskuVyBQRVWK4CXE/SVhrJF3rz6wnY8zZjA2TLoQ4q1nX2MQtHyoRyxGoCtGF1O8G55l4HdfVqLyo2aVwnR4wBWv888xpVTAlhS02UwPNlL6v6V2jWeKME6pCV9BkydcfJnykN29CKXy8pPAHjsp3xVjwgiBDtaiD/pxzXUzbl6AFX8sYC8qJyy3efbpg4qBFV51NnKXjLDpUpdmYwGZKHuZ6pe1q2wjhpCEBgXeBp5IM/rLfQ/LuCwhhO+JLwAAAAASUVORK5CYII=">
+
+  <link href="/css/font.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.legenda.css" rel="stylesheet" type="text/css">
+  <link href="/css/highlight.css" rel="stylesheet" type="text/css">
+  <link href="/css/master.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.demo.css" rel="stylesheet" type="text/css">
+  
+  <link href="/css/custom.css" rel="stylesheet" type="text/css">
+  
+  <script src="/js/jquery-2.1.4.min.js" type="text/javascript">
+  </script>
+
+  <script type="text/javascript" src="/js/tocbot.min.js"></script>
+</head>
+
+
+<body class="page-kube">
+  <header> <div class="show-sm">
+    <div id="nav-toggle-box">
+      <div id="nav-toggle-brand">
+        <a href="/">ML Hub</a>
+      </div><a data-component="toggleme" data-target="#top" href="#" id="nav-toggle"><i class="kube-menu"></i></a>
+    </div>
+  </div>
+  <div class="hide-sm" id="top">
+    <div id="top-brand">
+      <a href="/" title="home">ML Hub</a>
+    </div>
+    <nav id="top-nav-main">
+      <ul>
+       
+       
+    <li><a href="/docs/" >技术</a></li>
+    
+    <li><a href="/blog/" >日志</a></li>
+    
+    <li><a href="/faq/" >FAQ</a></li>
+    
+      </ul>
+    </nav>
+    <nav id="top-nav-extra"> 
+      <ul>
+          
+      </ul>
+    </nav>
+  </div>
+ </header>
+  <main>
+  <div id="main">
+    <div id="hero">
+      <h1> 模型版本控制 </h1>
+      <p class="hero-lead">
+           .
+      </p>
+
+    </div> 
+    <div id="kube-component" class="content">
+    
+<nav id="contents">
+    <ol class="js-toc">
+    </ol>
+</nav>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded",
+function(){
+tocbot.init({
+
+tocSelector: '.js-toc',
+
+contentSelector: '.content',
+
+headingSelector: 'h3'
+})
+}
+);
+</script>
+
+
+
+    <h3 id="背景">背景</h3>
+<p>版本控制在传统软件开发的管理过程中发挥着重要作用。大量开发者通过Git，SVN等版本控制工具，或是GitHub等平台进行开发过程的生命周期管理。而在机器学习和深度学习开发的过程中，通常需要开发人员自行进行版本控制，大大增加了开发人员的负担和项目管理的难度。</p>
+<h3 id="版本控制的目标">版本控制的目标</h3>
+<h4 id="内容追踪">内容追踪</h4>
+<p>版本控制需要追踪软件开发过程中文件的内容变化，并能够对不同版本的文件内容差异进行表示。</p>
+<h4 id="版本切换">版本切换</h4>
+<p>版本控制需要记录用户提交的所有版本，并能够在不同版本之间进行切换。</p>
+<h4 id="协同开发">协同开发</h4>
+<p>版本控制需要支撑开发团队进行协同开发，包括版本的分支，合并等功能。</p>
+<h3 id="传统版本控制的局限">传统版本控制的局限</h3>
+<p>由于模型开发过程与传统软件开发过程有所不同，传统的版本控制工具在模型开发过程中难以发挥出理想的效果。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>传统软件开发</th>
+<th>模型开发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>核心产品</td>
+<td>代码</td>
+<td>模型</td>
+</tr>
+<tr>
+<td>核心文件</td>
+<td>文本文件</td>
+<td>二进制文件</td>
+</tr>
+<tr>
+<td>文件规模</td>
+<td>Byte/KB</td>
+<td>MB/GB</td>
+</tr>
+<tr>
+<td>迭代方式</td>
+<td>文本编辑</td>
+<td>迭代训练</td>
+</tr>
+</tbody>
+</table>
+<p>传统版本控制的核心思想是追踪文件内容的变化，在此基础上构建版本切换和协同开发机制。由于上述不同，传统版本控制工具和平台在对模型进行管理时难以实现内容变化的有效追踪，高效的版本切换和协同开发机制。</p>
+<h4 id="内容追踪-1">内容追踪</h4>
+<p>传统版本控制对文件的文本内容变化进行追踪。如Git中可以通过git diff命令计算两个版本之间的文件内容差异。</p>
+<p>由于模型文件并非通过文本编辑而是通过重新训练生成，且模型文件通常为二进制文件，传统的版本控制工具难以对模型文件的内容变化进行刻画和有意义的表示。</p>
+<p><img src="./xx.png" alt=""></p>
+<h4 id="版本切换-1">版本切换</h4>
+<p>传统版本控制工具通过对文件内容和版本差异的记录计算出目标版本的文件内容，并写入对应文件。如Git中可以通过git checkout命令切换到指定版本。</p>
+<p>由于模型文件版本差异较大，通过传统版本控制工具进行版本记录的额外存储开销过大且通过版本切换命令计算目标版本的过程计算量较大，在版本切换的效率和存储开销方面远不如开发人员手动维护的版本记录。</p>
+<p><img src="./xx.png" alt=""></p>
+<h4 id="协同开发-1">协同开发</h4>
+<p>传统版本控制工具通过分支，合并，拉取更新等方式进行协同开发。例如Git中可以通过git branch，git merge，git pull等命令进行协同开发。</p>
+<p>由于模型文件规模较大且通常为二进制文件，不同版本的合并难以进行，且远程仓库版本的拉取速度较慢。</p>
+<p><img src="./xx.png" alt=""></p>
+<h3 id="mlhub版本控制的特色">MLHUB版本控制的特色</h3>
+<p>MLHUB从模型开发过程的特征出发，以模型为核心实现简单易用的版本控制机制。</p>
+<h4 id="内容追踪-2">内容追踪</h4>
+<p>MLHUB追踪模型的版本变化，对不同版本的模型进行清晰刻画并进行有意义的版本差异表示。</p>
+<p><img src="./xx.png" alt=""></p>
+<h4 id="版本切换-2">版本切换</h4>
+<p>MLHUB从模型的特征出发，实现适合模型文件的版本存储和切换机制，实现节约存储空间和高效切换版本的目标。</p>
+<p><img src="./xx.png" alt=""></p>
+<h4 id="协同开发-2">协同开发</h4>
+<p>MLHUB基于模型的结构实现模型的解构和复用，构建适用于模型文件的分支与合并机制并降低与远程仓库的通信压力。</p>
+<p><img src="./xx.png" alt=""></p>
+
+
+    
+    </div>
+    </div>
+</main>
+  <footer></footer>
+
+
+  <script src="/js/kube.js" type="text/javascript">
+  </script>
+  <script src="/js/kube.legenda.js" type="text/javascript">
+  </script>
+  <script src="/js/master.js" type="text/javascript">
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta name="generator" content="Hugo 0.69.0" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> 自动化超参数训练 </title>
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  <meta name="author" content="@mlhub">
+
+
+  <meta property="og:title" content="自动化超参数训练" />
+<meta property="og:description" content="功能介绍 自动化的调参是MLhub调参模块的关键功能，主要的应用场景是超参调优。调参模块提供了多种流行的自动调参算法，包括常用的网格搜索（Grid search）、随机搜索（Random search）以及更高级的继续随机序列建模的TPE算法等。
+使用调参模块只需要简单的几个步骤，首先，用户在前端定义自己的搜索空间，搜索空间会被整理成指定的JSON格式，并发送到后端。然后，用户在自己的代码中进行修改，只需要在调用我们提供的api来获得新的参数以及报告数据（数据包括性能指标的变化和Loss的变化等）。最后启动任务。后端会根据用户的配置在集群中创建一个Pod来完成这次实验。实验的中间结果和最终结果会被展示在前端。用户可以根据可视化的结果，选择较优的参数或者调整自己的代码。
+模块设计 图1通过一个完整的调参任务流程展示了自动化超参数训练的模块设计，图中的标号代表了数据的传递过程：
+  前端将用户定义的实验配置信息，包括搜索空间、启动指令等发送给后端的Launcher
+  Launcher根据实验配置信息，在集群中创建Experiment Pod来完成这次实验，并将实验的配置信息挂载到Experiment Pod中
+  Experiment Pod由Manager和Tuner两个容器构成，Manager负责控制实验的进度，对实验进行统一管理，而Tuner中封装了若干调参算法。Manager在创建新的Trial时，会向Tuner请求新的一组超参数，以及报告已经完成的Trial的结果。
+  Tuner会根据已经完成的Trial的结果，预测搜索空间中更好的参数，并发送给Manager
+  Experiment Pod通过K8s api向部署在集群中的TF/Pytorch operator发送请求，要求新建tfjob/pytorchjob。
+  TF/Pytorch operator根据Experiment Pod的请求创建出Trial Pod。Trial Pod会挂载用户的代码和数据卷，并进行训练和测试。
+  Trial Pod向Experiment Pod中的Manager报告本次Trial的结果（包括Loss的变化，最终的准确度等）
+  Manager获得结果后，将其连同Trial的信息存入数据库。并判断是否要继续进行实验。
+  前端可以向后端请求实验的数据，并将其可视化，展示给用户，方便用户选择较优的参数。
+  如何使用 修改训练代码 我们提供了一个pytorch的超参数训练的例子,首先，我们需要修改训练代码，通过调用dlkit_utils.py中给出的api获取一组参数以及报告训练结果:
+# dlkit_util.py # 获取一组超参数，类型为dict def get_parameter():# 报告最终的训练效果，通常是准确度等评估数据 def report_final_result(data):# 报告每个epoch的loss数据，用于可视化展示 def report_loss(data):# 报告每个epoch的训练效果，用于可视化展示 def report_intermediate_result(data):我们需要修改训练代码：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/hyperparameter/" />
+<meta property="article:published_time" content="2020-04-08T15:56:45+08:00" />
+<meta property="article:modified_time" content="2020-04-08T15:56:45+08:00" />
+
+  
+
+
+
+
+  
+  
+  
+  
+  
+
+  <link rel="canonical" href="/docs/hyperparameter/">  
+
+  <link rel="shortcut icon" type="image/png"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABvklEQVQ4T82Tz0vTcRjHX8/XbYqGzEtiltShgghziR4UYsuQEASJWOvQ0dsEsaA/oIPYbZ49eZrfToEHO20jEAoRCVMMw1Hrx3IR1ZpzP3xiX9j4sh969Tk+P1583u/n+QgNwhvWaYQZBEEJ/RDmt/ySq26X6oQvrPe0NAjDTQarLgfugxzXFNYNJRQJyKJ9pgLwmdqP8ljhYXMTrz3d/O1qZ6zUnPrHp7UEqYM8N4EVhFDULyulmgXwmjorykyLk7fXOzk872aknrJkmp2NBD8zBYYUFh3CnHhNjTiEnr4u0hc66G3kiT3/+Tebm99IZ/PkLUC7E/fCXRyx73z8muEO0NYIFP/FxvskuVyBQRVWK4CXE/SVhrJF3rz6wnY8zZjA2TLoQ4q1nX2MQtHyoRyxGoCtGF1O8G55l4HdfVqLyo2aVwnR4wBWv888xpVTAlhS02UwPNlL6v6V2jWeKME6pCV9BkydcfJnykN29CKXy8pPAHjsp3xVjwgiBDtaiD/pxzXUzbl6AFX8sYC8qJyy3efbpg4qBFV51NnKXjLDpUpdmYwGZKHuZ6pe1q2wjhpCEBgXeBp5IM/rLfQ/LuCwhhO+JLwAAAAASUVORK5CYII=">
+
+  <link href="/css/font.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.legenda.css" rel="stylesheet" type="text/css">
+  <link href="/css/highlight.css" rel="stylesheet" type="text/css">
+  <link href="/css/master.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.demo.css" rel="stylesheet" type="text/css">
+  
+  <link href="/css/custom.css" rel="stylesheet" type="text/css">
+  
+  <script src="/js/jquery-2.1.4.min.js" type="text/javascript">
+  </script>
+
+  <script type="text/javascript" src="/js/tocbot.min.js"></script>
+</head>
+
+
+<body class="page-kube">
+  <header> <div class="show-sm">
+    <div id="nav-toggle-box">
+      <div id="nav-toggle-brand">
+        <a href="/">ML Hub</a>
+      </div><a data-component="toggleme" data-target="#top" href="#" id="nav-toggle"><i class="kube-menu"></i></a>
+    </div>
+  </div>
+  <div class="hide-sm" id="top">
+    <div id="top-brand">
+      <a href="/" title="home">ML Hub</a>
+    </div>
+    <nav id="top-nav-main">
+      <ul>
+       
+       
+    <li><a href="/docs/" >技术</a></li>
+    
+    <li><a href="/blog/" >日志</a></li>
+    
+    <li><a href="/faq/" >FAQ</a></li>
+    
+      </ul>
+    </nav>
+    <nav id="top-nav-extra"> 
+      <ul>
+          
+      </ul>
+    </nav>
+  </div>
+ </header>
+  <main>
+  <div id="main">
+    <div id="hero">
+      <h1> 自动化超参数训练 </h1>
+      <p class="hero-lead">
+           .
+      </p>
+
+    </div> 
+    <div id="kube-component" class="content">
+    
+<nav id="contents">
+    <ol class="js-toc">
+    </ol>
+</nav>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded",
+function(){
+tocbot.init({
+
+tocSelector: '.js-toc',
+
+contentSelector: '.content',
+
+headingSelector: 'h3'
+})
+}
+);
+</script>
+
+
+
+    <h3 id="功能介绍">功能介绍</h3>
+<p>自动化的调参是MLhub调参模块的关键功能，主要的应用场景是超参调优。调参模块提供了多种流行的自动调参算法，包括常用的网格搜索（Grid search）、随机搜索（Random search）以及更高级的继续随机序列建模的<a href="https://papers.nips.cc/paper/4443-algorithms-for-hyper-parameter-optimization.pdf">TPE</a>算法等。</p>
+<p>使用调参模块只需要简单的几个步骤，首先，用户在前端定义自己的搜索空间，搜索空间会被整理成指定的JSON格式，并发送到后端。然后，用户在自己的代码中进行修改，只需要在调用我们提供的api来获得新的参数以及报告数据（数据包括性能指标的变化和Loss的变化等）。最后启动任务。后端会根据用户的配置在集群中创建一个Pod来完成这次实验。实验的中间结果和最终结果会被展示在前端。用户可以根据可视化的结果，选择较优的参数或者调整自己的代码。</p>
+<h3 id="模块设计">模块设计</h3>
+<!-- raw HTML omitted -->
+<p>图1通过一个完整的调参任务流程展示了自动化超参数训练的模块设计，图中的标号代表了数据的传递过程：</p>
+<ol>
+<li>
+<p>前端将用户定义的实验配置信息，包括搜索空间、启动指令等发送给后端的Launcher</p>
+</li>
+<li>
+<p>Launcher根据实验配置信息，在集群中创建Experiment Pod来完成这次实验，并将实验的配置信息挂载到Experiment Pod中</p>
+</li>
+<li>
+<p>Experiment Pod由Manager和Tuner两个容器构成，Manager负责控制实验的进度，对实验进行统一管理，而Tuner中封装了若干调参算法。Manager在创建新的Trial时，会向Tuner请求新的一组超参数，以及报告已经完成的Trial的结果。</p>
+</li>
+<li>
+<p>Tuner会根据已经完成的Trial的结果，预测搜索空间中更好的参数，并发送给Manager</p>
+</li>
+<li>
+<p>Experiment Pod通过K8s api向部署在集群中的TF/Pytorch operator发送请求，要求新建tfjob/pytorchjob。</p>
+</li>
+<li>
+<p>TF/Pytorch operator根据Experiment Pod的请求创建出Trial Pod。Trial Pod会挂载用户的代码和数据卷，并进行训练和测试。</p>
+</li>
+<li>
+<p>Trial Pod向Experiment Pod中的Manager报告本次Trial的结果（包括Loss的变化，最终的准确度等）</p>
+</li>
+<li>
+<p>Manager获得结果后，将其连同Trial的信息存入数据库。并判断是否要继续进行实验。</p>
+</li>
+<li>
+<p>前端可以向后端请求实验的数据，并将其可视化，展示给用户，方便用户选择较优的参数。</p>
+</li>
+</ol>
+<h3 id="如何使用">如何使用</h3>
+<h4 id="修改训练代码">修改训练代码</h4>
+<p>我们提供了一个pytorch的<a href="https://github.com/czhnju161220026/tune-example">超参数训练的例子</a>,首先，我们需要修改训练代码，通过调用dlkit_utils.py中给出的api获取一组参数以及报告训练结果:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># dlkit_util.py</span>
+<span style="color:#75715e"># 获取一组超参数，类型为dict</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_parameter</span>():
+<span style="color:#75715e"># 报告最终的训练效果，通常是准确度等评估数据</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">report_final_result</span>(data):
+<span style="color:#75715e"># 报告每个epoch的loss数据，用于可视化展示</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">report_loss</span>(data):
+<span style="color:#75715e"># 报告每个epoch的训练效果，用于可视化展示</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">report_intermediate_result</span>(data):
+</code></pre></div><p>我们需要修改训练代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># train.py</span>
+<span style="color:#f92672">...</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    <span style="color:#75715e"># 获取超参数</span>
+    parameters <span style="color:#f92672">=</span> get_parameter()
+    <span style="color:#75715e"># 加载数据集</span>
+    trainset <span style="color:#f92672">=</span> dataloader(root<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>dataroot, train<span style="color:#f92672">=</span>True, download<span style="color:#f92672">=</span>True, transform<span style="color:#f92672">=</span>transform_train)
+    trainloader <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>trainset, batch_size<span style="color:#f92672">=</span>parameters[<span style="color:#e6db74">&#39;batch_size&#39;</span>], shuffle<span style="color:#f92672">=</span>False)
+    testset <span style="color:#f92672">=</span> dataloader(root<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>dataroot, train<span style="color:#f92672">=</span>False, download<span style="color:#f92672">=</span>False, transform<span style="color:#f92672">=</span>transform_test)
+    testloader <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(testset, batch_size<span style="color:#f92672">=</span>parameters[<span style="color:#e6db74">&#39;batch_size&#39;</span>], shuffle<span style="color:#f92672">=</span>False, num_workers<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>workers)
+    <span style="color:#75715e"># 加载模型</span>
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;==&gt; creating model &#39;{}&#39;&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34;Resnet&#34;</span>))
+    model <span style="color:#f92672">=</span> ResNet(depth<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>depth, num_classes<span style="color:#f92672">=</span>num_classes)
+    model <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>cuda() 
+    criterion <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>CrossEntropyLoss()
+    optimizer <span style="color:#f92672">=</span> optim<span style="color:#f92672">.</span>SGD(model<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span>parameters[<span style="color:#e6db74">&#39;lr&#39;</span>], momentum<span style="color:#f92672">=</span>parameters[<span style="color:#e6db74">&#39;momentum&#39;</span>], weight_decay<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>weight_decay)
+
+    <span style="color:#75715e"># Train and test</span>
+    result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
+    <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(parameters[<span style="color:#e6db74">&#39;epoch&#39;</span>]):
+        adjust_learning_rate(optimizer, epoch)
+        train_loss, train_acc <span style="color:#f92672">=</span> train(trainloader, model, criterion, optimizer, epoch, use_cuda)
+        test_loss, test_acc <span style="color:#f92672">=</span> test(testloader, model, criterion, epoch, use_cuda) 
+        train_loss, test_loss, train_acc, test_acc))
+        <span style="color:#75715e"># 报告中间结果</span>
+        report_intermediate_result(float(test_acc))
+        <span style="color:#75715e"># 报告loss</span>
+        report_loss(float(test_loss))
+        result <span style="color:#f92672">=</span> test_acc
+    <span style="color:#75715e"># 报告最终结果</span>
+    report_final_result(float(result))
+</code></pre></div><h4 id="创建工作区">创建工作区</h4>
+<p>在MLhub上，我们通过用户填写git仓库的方式来为新创建的工作区添加代码：</p>
+<!-- raw HTML omitted -->
+<h4 id="任务定制">任务定制</h4>
+<p>工作区创建完毕后，我们可以看到新建的工作区:</p>
+<!-- raw HTML omitted -->
+<p>接着我们可以通过以下两种方式启动一个超参数任务</p>
+<h5 id="方式一前端录入">方式一：前端录入</h5>
+<p>点击工作区，进入详情页面后，在任务定制面板中，点击增加任务，然后填写具体的任务信息</p>
+<!-- raw HTML omitted -->
+<h5 id="方式二-在线编辑推荐">方式二： 在线编辑(推荐)</h5>
+<p>点击工作区上的vscode按钮，可以进入code server进行在线编辑，可以看到，我们的代码和选择的数据卷已经在code server中：</p>
+<!-- raw HTML omitted -->
+<p>接着，在终端中执行<!-- raw HTML omitted -->dlctl nni-init<!-- raw HTML omitted -->,会生成一个 dlkit-tune.json文件，编辑该文件，填入超参数空间以及训练指令等信息:</p>
+<!-- raw HTML omitted -->
+<p>最后在终端中执行<!-- raw HTML omitted -->dlctl nni-submit<!-- raw HTML omitted -->就可以启动调参任务</p>
+<h4 id="结果可视化">结果可视化</h4>
+<p>任务运行时，我们可以在任务详情中查看任务的运行进度、每个子任务的中间结果，Loss变化等信息：</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+
+
+    
+    </div>
+    </div>
+</main>
+  <footer></footer>
+
+
+  <script src="/js/kube.js" type="text/javascript">
+  </script>
+  <script src="/js/kube.legenda.js" type="text/javascript">
+  </script>
+  <script src="/js/master.js" type="text/javascript">
+  </script>
+</body>
+
+</html>
